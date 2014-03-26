@@ -1,5 +1,5 @@
 {
-  "name": "angularjs-seed",
+  "name": "procrastinar",
   "description": "A starter project for AngularJS",
   "repository": "https://github.com/angular/angular-seed",
   "devDependencies": {
@@ -8,5 +8,10 @@
     "karma-junit-reporter" : "~0.1",
     "karma-jasmine" : "~0.1",
     "protractor" : "~0.17.0"
+  }
+
+  "dependencies": {
+    "express": "~3.2.6",
+    "jade": "~0.31.2"
   }
 }

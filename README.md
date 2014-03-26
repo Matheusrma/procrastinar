@@ -1,144 +1,84 @@
-# angular-seed — the seed for AngularJS apps
+# Angular Express Bootstrap Seed
 
-This project is an application skeleton for a typical [AngularJS](http://angularjs.org/) web app.
-You can use it to quickly bootstrap your angular webapp projects and dev environment for these
-projects.
+Forked from [btford/angular-express-seed](https://github.com/btford/angular-express-seed) and spiced with [Twitter Bootstrap](https://github.com/twitter/bootstrap). jQuery added for convenience.
 
-The seed contains AngularJS libraries, test libraries and a bunch of scripts all preconfigured for
-instant web development gratification. Just clone the repo (or download the zip/tarball), start up
-our (or your) webserver and you are ready to develop and test your application.
+Start an awesome app with AngularJS + Bootstrap on the front, Express + Node on the back. This project is an
+application skeleton for a typical [AngularJS](http://angularjs.org/) web app for those who want
+to use Node to serve their app.
 
-The seed app doesn't do much, just shows how to wire two controllers and views together. You can
-check it out by opening app/index.html in your browser (might not work file `file://` scheme in
-certain browsers, see note below).
+The seed contains angular libraries, test libraries and a bunch of scripts all preconfigured for
+instant web development gratification. Just clone the repo (or download the zip/tarball) and
+you're ready to develop your application.
 
-_Note: While angular is client-side-only technology and it's possible to create angular webapps that
-don't require a backend server at all, we recommend hosting the project files using a local
-webserver during development to avoid issues with security restrictions (sandbox) in browsers. The
-sandbox implementation varies between browsers, but quite often prevents things like cookies, xhr,
-etc to function properly when an html page is opened via `file://` scheme instead of `http://`._
+The seed app shows how to wire together Angular client-side components with Express on the server.
+It also illustrates writing angular partials/views with the Jade templating library.
 
+_Note: Although Jade supports interpolation, you should be doing that mostly on the client. Mixing
+server and browser templating will convolute your app. Instead, use Jade as a syntactic sugar for
+HTML, and let AngularJS take care of interpolation on the browser side._
 
-## How to use angular-seed
+## How to use angular-express-seed
 
-Clone the angular-seed repository and start hacking...
+Clone the angular-express-seed repository, run `npm install` to grab the dependencies and start hacking!
 
+### Running the app
 
-### Running the app during development
+Runs like a typical express app:
 
-You can pick one of these options:
+    node app.js
 
-* serve this repository with your webserver
-* install node.js and run `scripts/web-server.js`
+### Running tests
 
-Then navigate your browser to `http://localhost:<port>/app/index.html` to see the app running in
-your browser.
-
-
-### Running the app in production
-
-This really depends on how complex is your app and the overall infrastructure of your system, but
-the general rule is that all you need in production are all the files under the `app/` directory.
-Everything else should be omitted.
-
-Angular apps are really just a bunch of static html, css and js files that just need to be hosted
-somewhere, where they can be accessed by browsers.
-
-If your Angular app is talking to the backend server via xhr or other means, you need to figure
-out what is the best way to host the static files to comply with the same origin policy if
-applicable. Usually this is done by hosting the files by the backend server or through
-reverse-proxying the backend server(s) and a webserver(s).
-
-
-### Running unit tests
-
-We recommend using [jasmine](http://pivotal.github.com/jasmine/) and
-[Karma](http://karma-runner.github.io) for your unit tests/specs, but you are free
-to use whatever works for you.
-
-Requires [node.js](http://nodejs.org/), Karma (`sudo npm install -g karma`) and a local
-or remote browser.
-
-* start `scripts/test.sh` (on windows: `scripts\test.bat`)
-  * a browser will start and connect to the Karma server (Chrome is default browser, others can be captured by loading the same url as the one in Chrome or by changing the `config/karma.conf.js` file)
-* to run or re-run tests just change any of your source or test javascript files
-
-
-### End to end testing
-
-We recommend using [protractor](https://github.com/angular/protractor) for end-to-end tests. It
-uses native events and has special features for Angular applications.
-
-Requires a webserver, node.js + `./scripts/web-server.js` or your backend server that hosts the angular static files.
-
-* create your end-to-end tests in `test/e2e/scenarios.js`
-* serve your project directory with your http/backend server or node.js + `scripts/web-server.js`
-* to run:
-  * run the tests from console with [Protractor](https://github.com/angular/protractor) via
-    `scripts/e2e-test.sh` (on windows: `scripts\e2e-test.bat`)
-
-### Continuous Integration
-
-CloudBees have provided a CI/deployment setup:
-
-<a href="https://grandcentral.cloudbees.com/?CB_clickstart=https://raw.github.com/CloudBees-community/angular-js-clickstart/master/clickstart.json"><img src="https://d3ko533tu1ozfq.cloudfront.net/clickstart/deployInstantly.png"/></a>
-
-If you run this, you will get a cloned version of this repo to start working on in a private git repo, 
-along with a CI service (in Jenkins) hosted that will run unit and end to end tests in both Firefox and Chrome.
+Coming soon!
 
 ### Receiving updates from upstream
 
-When we upgrade angular-seed's repo with newer angular or testing library code, you can just
-fetch the changes and merge them into your project with git.
+Just fetch the changes and merge them into your project with git.
 
 
 ## Directory Layout
-
-    app/                --> all of the files to be used in production
+    
+    app.js              --> app config
+    package.json        --> for npm
+    public/             --> all of the files to be used in on the client side
+      bootstrap/        --> all bootstrap files
+        css/
+        img/
+        js/
       css/              --> css files
         app.css         --> default stylesheet
       img/              --> image files
-      index.html        --> app layout file (the main html template file of the app)
-      index-async.html  --> just like index.html, but loads js files asynchronously
       js/               --> javascript files
-        app.js          --> application
+        app.js          --> declare top-level app module
         controllers.js  --> application controllers
-        directives.js   --> application directives
+        directives.js   --> custom angular directives
         filters.js      --> custom angular filters
         services.js     --> custom angular services
-      lib/              --> angular and 3rd party javascript libraries
-        angular/
-          angular.js        --> the latest angular js
-          angular.min.js    --> the latest minified angular js
-          angular-*.js      --> angular add-on modules
-          version.txt       --> version number
-      partials/             --> angular view partials (partial html templates)
-        partial1.html
-        partial2.html
+        lib/            --> angular and 3rd party JavaScript libraries
+          angular/
+            angular.js            --> the latest angular js
+            angular.min.js        --> the latest minified angular js
+            angular-*.js          --> angular add-on modules
+            version.txt           --> version number
+    routes/
+      api.js            --> route for serving JSON
+      index.js          --> route for serving HTML pages and partials
+    views/
+      index.jade        --> main page for app
+      layout.jade       --> doctype, title, head boilerplate
+      partials/         --> angular view partials (partial jade templates)
+        partial1.jade
+        partial2.jade
 
-    config/karma.conf.js        --> config file for running unit tests with Karma
-    config/protractor-conf.js    --> config file for running e2e tests with Protractor
 
-    scripts/            --> handy shell/js/ruby scripts
-      e2e-test.sh       --> runs end-to-end tests with Karma (*nix)
-      e2e-test.bat      --> runs end-to-end tests with Karma (windows)
-      test.bat          --> autotests unit tests with Karma (windows)
-      test.sh           --> autotests unit tests with Karma (*nix)
-      web-server.js     --> simple development webserver based on node.js
 
-    test/               --> test source files and libraries
-      e2e/              -->
-        scenarios.js    --> end-to-end specs
-      lib/
-        angular/                --> angular testing libraries
-          angular-mocks.js      --> mocks that replace certain angular services in tests
-          version.txt           --> version file
-      unit/                     --> unit level specs/tests
-        controllersSpec.js      --> specs for controllers
-        directivessSpec.js      --> specs for directives
-        filtersSpec.js          --> specs for filters
-        servicesSpec.js         --> specs for services
+## Example App
+
+A simple [blog](https://github.com/btford/angular-express-blog) based on this seed.
+
 
 ## Contact
 
 For more information on AngularJS please check out http://angularjs.org/
+For more on Express and Jade, http://expressjs.com/ and http://jade-lang.com/ are
+your friends.
