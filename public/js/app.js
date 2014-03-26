@@ -1,11 +1,15 @@
 'use strict';
 
+var app = angular.module('procrastinarApp', ['procrastinarApp.filters', 'procrastinarApp.services', 
+						 'procrastinarApp.directives','procrastinarApp.Controllers','ngRoute','facebook']);
 
-// Declare app level module which depends on filters, and services
-angular.module('myApp', ['myApp.filters', 'myApp.services', 'myApp.directives','ngRoute']).
-  config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
-    $routeProvider.when('/view1', {templateUrl: 'partial/1', controller: MyCtrl1});
-    $routeProvider.when('/view2', {templateUrl: 'partial/2', controller: MyCtrl2});
-    $routeProvider.otherwise({redirectTo: '/view1'});
+app.config(['$routeProvider', '$locationProvider', 'FacebookProvider', function($routeProvider, $locationProvider, FacebookProvider) {
+    
+    $routeProvider.when('/index', {templateUrl: 'partial/main'});
+
+    $routeProvider.otherwise({redirectTo: '/index'});
+    
     $locationProvider.html5Mode(true);
+
+    FacebookProvider.init('732284086786939');
   }]);

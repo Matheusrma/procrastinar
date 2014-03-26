@@ -8,16 +8,12 @@ block body
         span.icon-bar
         span.icon-bar
         span.icon-bar
-      a.navbar-brand(href="#") Brand
+      a.navbar-brand(href="#") Procrastinar
     
     .collapse.navbar-collapse.navbar-ex1-collapse
       ul.nav.navbar-nav
-        li
-          a(href="view1") View1
-        li  
-          a(href="view2") View2 
   .container      
-    div(ng-controller='AppCtrl')
+    div(ng-controller='MainCtrl')
       .jumbotron  
         h1 Hello {{name}}
       div(ng-view)
@@ -35,3 +31,4 @@ block body
   script(src='js/directives.js')
   script(src='js/lib/jquery/jquery-2.0.3.min.js')
   script(src='bootstrap/js/bootstrap.min.js')
+  script(src='js/lib/angular-facebook.js')
