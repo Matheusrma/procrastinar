@@ -1,9 +1,22 @@
 .row.title
 	h1 Procrastinar
-	
+
+.row
+	#login-container.pre-auth
+		| This application requires access to your YouTube account.
+		| Please
+		a#login-link(href='#') authorize
+		| to continue.
+
 .row
 	.col-lg-6.generate-input
 		.input-group
 			input.form-control(type='text', placeholder='Quanto tempo você tem?')
 			span.input-group-btn
-				button.btn.btn-default(type='button') Generate
+				button.btn.btn-default(ng-click='generate()', type='button') Generate
+
+	.col-lg-6.links(ng-show = 'isGenerated()')
+		h3 Resultado
+		ul
+			li(ng-repeat = 'video in videos')
+				a(target='_blank', ng-href='{{ video.getLink() }}') {{ video.getLink() }} 

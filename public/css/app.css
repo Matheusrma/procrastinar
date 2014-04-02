@@ -25,4 +25,12 @@ body {
 	color:#ffffff;
 }
 
+.links{
+	margin: 20px auto;
+	float: center;
+}
+
+.links > h3{
+	color:#ffffff;
+}
   

@@ -11,10 +11,12 @@ block body
       a.navbar-brand(href="#") Procrastinar
     
     .collapse.navbar-collapse.navbar-ex1-collapse
-      ul.nav.navbar-nav
+      ul.nav.navbar-nav   
   .container      
     div(ng-controller='MainCtrl')
       div(ng-view)
+
+  script(src='js/lib/jquery/jquery-2.0.3.min.js')
 
   script(src='js/lib/angular/angular.js')
   script(src='js/lib/angular/angular-route.js')
@@ -23,6 +25,10 @@ block body
   script(src='js/controllers.js')
   script(src='js/filters.js')
   script(src='js/directives.js')
-  script(src='js/lib/jquery/jquery-2.0.3.min.js')
   script(src='bootstrap/js/bootstrap.min.js')
+  
   script(src='js/lib/angular-facebook.js')
+
+  script(src='js/lib/youtube/auth.js')
+
+  script(src='https://apis.google.com/js/client.js?onload=googleApiClientReady')
