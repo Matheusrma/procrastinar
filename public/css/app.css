@@ -2,7 +2,27 @@
 
 body {
   padding-top:70px;
+  font-family: Helvetica;
 }
 
+.background{
+	background-color: #000000;
+}
+
+.generate-input{
+	margin: 0 auto;
+	float: center;
+}
+
+.title{
+	margin-top: 100px;
+	margin-bottom: 20px;
+}
+
+.title > h1{
+	text-align: center;
+	font-size: 150px;
+	color:#ffffff;
+}
 
   

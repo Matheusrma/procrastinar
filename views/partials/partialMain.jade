@@ -1,3 +1,9 @@
+.row.title
+	h1 Procrastinar
+	
 .row
-	.col-lg-12
-		button(ng-click='login()') Generate
+	.col-lg-6.generate-input
+		.input-group
+			input.form-control(type='text', placeholder='Quanto tempo você tem?')
+			span.input-group-btn
+				button.btn.btn-default(type='button') Generate
