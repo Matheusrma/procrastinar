@@ -10,10 +10,18 @@ function Video(youtubeId){
 	};		
 }
 
+function Like(name){
+	var m_name = name;
+
+	this.getName = function(){
+		return m_name;
+	}
+}
+
 angular.module('procrastinarApp.Controllers', []).
 controller('MainCtrl', ['$scope', '$http', 'Facebook', function($scope, $http, Facebook){
 
-	var m_currentSearchResult = "ESPERANDO";
+	var m_likes = [];
 	$scope.videos = [];
 
 	$scope.getCurrentSearch = function(){
@@ -21,20 +29,32 @@ controller('MainCtrl', ['$scope', '$http', 'Facebook', function($scope, $http, F
 	}
 
 	$scope.login = function() {
-    
-        FB.getLoginStatus(function(response) {
+        Facebook.login(function(response) {
       		console.log(response);
-    	},true);
-
+    	}, {scope: 'user_likes'});
     };
 
     var m_generated = false;
 
     $scope.generate = function(){
 
-		youtubeSearch("Harry Potter", 10);
+		$scope.videos = [];
 
-    	m_generated = true;
+		Facebook.api('/me/likes', function(response) {
+	        var likes = response.data;
+
+	        console.log(response);
+
+	        for (var i = 0; i < likes.length; ++i){
+	        	m_likes.push(new Like(likes[i].name));
+	        }
+
+	        var randomIndex = Math.floor(Math.random() * m_likes.length);
+
+	        youtubeSearch(m_likes[randomIndex].getName(), 10);
+
+    		m_generated = true;
+	    });
     };
 
     $scope.isGenerated = function(){
@@ -42,6 +62,8 @@ controller('MainCtrl', ['$scope', '$http', 'Facebook', function($scope, $http, F
     };
 
     var youtubeSearch = function(p_query, p_maxResults){
+
+    	console.log(p_query);
 
 	  	var request = gapi.client.youtube.search.list({
 	    	part: 'id',
