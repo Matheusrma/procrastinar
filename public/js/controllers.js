@@ -2,12 +2,23 @@
 
 /* Controllers */
 
-function Video(youtubeId){
+function Video(youtubeId, duration){
 	var m_youtubeId = youtubeId;
+	var m_duration = duration; 
 
 	this.getLink = function(){
 		return "http://www.youtube.com/watch?v=" + m_youtubeId;
 	};		
+
+	this.getDuration = function(){
+
+		var splitedDuration = m_duration.split("M");
+
+		var minuteSide = splitedDuration[0].substring(2,splitedDuration[0].length);
+		var secondSide = splitedDuration[1].substring(0,splitedDuration[1].length - 1);
+
+		return parseInt(minuteSide) * 60 + parseInt(secondSide);
+	}
 }
 
 function Like(name){
@@ -87,7 +98,7 @@ controller('MainCtrl', ['$scope', '$http', 'Facebook', function($scope, $http, F
 	  		var items = response.result.items;
 
 	  		for (var i = 0; i < items.length; ++i){
-	  			$scope.videos.push(new Video(items[i].id.videoId));
+	  			$scope.videos.push(new Video(items[i].id.videoId, "PT2M57S"));
 	  		}
 
 	    	$scope.$apply()
