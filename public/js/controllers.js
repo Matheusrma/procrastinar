@@ -11,13 +11,42 @@ function Video(youtubeId, duration){
 	};		
 
 	this.getDuration = function(){
+		return convertTime(m_duration);
+	}
 
-		var splitedDuration = m_duration.split("M");
+	var convertTime = function(duration) {
+	    var a = duration.match(/\d+/g);
 
-		var minuteSide = splitedDuration[0].substring(2,splitedDuration[0].length);
-		var secondSide = splitedDuration[1].substring(0,splitedDuration[1].length - 1);
+	    if (duration.indexOf('M') >= 0 && duration.indexOf('H') == -1 && duration.indexOf('S') == -1) {
+	        a = [0, a[0], 0];
+	    }
 
-		return parseInt(minuteSide) * 60 + parseInt(secondSide);
+	    if (duration.indexOf('H') >= 0 && duration.indexOf('M') == -1) {
+	        a = [a[0], 0, a[1]];
+	    }
+
+	    if (duration.indexOf('H') >= 0 && duration.indexOf('M') == -1 && duration.indexOf('S') == -1) {
+	        a = [a[0], 0, 0];
+	    }
+
+	    duration = 0;
+
+	    if (a.length == 3) {
+	        duration = duration + parseInt(a[0]) * 3600;
+	        duration = duration + parseInt(a[1]) * 60;
+	        duration = duration + parseInt(a[2]);
+	    }
+
+	    if (a.length == 2) {
+	        duration = duration + parseInt(a[0]) * 60;
+	        duration = duration + parseInt(a[1]);
+	    }
+
+	    if (a.length == 1) {
+	        duration = duration + parseInt(a[0]);
+	    }
+
+	    return duration
 	}
 }
 
@@ -34,6 +63,8 @@ controller('MainCtrl', ['$scope', '$http', 'Facebook', function($scope, $http, F
 
 	var m_likes = [];
 	$scope.videos = [];
+	$scope.timeInput = '';
+    $scope.isFacebookLogged = false;
 
 	$scope.getCurrentSearch = function(){
 		return m_currentSearchResult;
@@ -41,13 +72,20 @@ controller('MainCtrl', ['$scope', '$http', 'Facebook', function($scope, $http, F
 
 	$scope.login = function() {
         Facebook.login(function(response) {
-      		console.log(response);
+        	
+        	if (response.status == "connected"){
+      			$scope.isFacebookLogged = true;
+        	}
+
     	}, {scope: 'user_likes'});
     };
+
 
     var m_generated = false;
 
     $scope.generate = function(){
+
+    	console.log($scope.timeInput);
 
 		$scope.videos = [];
 
@@ -86,14 +124,14 @@ controller('MainCtrl', ['$scope', '$http', 'Facebook', function($scope, $http, F
 
 	  	request.execute(function(response) {
 	  		
-	  		// var detailRequest = gapi.client.youtube.videos.list ({
-	  		// 	part: 'contentDetails',
-	  		// 	id: '07e76t7n2KE' 
-	  		// });
+	  		var detailRequest = gapi.client.youtube.videos.list ({
+	  			part: 'contentDetails',
+	  			id: 'v6kdnidOGqc' 
+	  		});
 
-	  		// detailRequest.execute(function(response){
-	  		// 	console.log(response.result.items[0].contentDetails.duration);
-	  		// });
+	  		detailRequest.execute(function(response){
+	  			console.log(response.result.items[0].contentDetails.duration);
+	  		});
 
 	  		var items = response.result.items;
 

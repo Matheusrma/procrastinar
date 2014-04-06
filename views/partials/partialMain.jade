@@ -9,16 +9,21 @@
 		| to continue.
 
 .row
+	//.fb-login-button(data-max-rows='1', data-size='large', data-show-faces='true', data-auto-logout-link='false')
 
-	button(ng-click='login()') Login
-	.col-lg-6.generate-input
-		.input-group
-			input.form-control(type='text', placeholder='Quanto tempo você tem?')
-			span.input-group-btn
-				button.btn.btn-default(ng-click='generate()', type='button') Generate
+	div(ng-hide='isFacebookLogged')
+		.col-lg-6.center-on-div
+			button(ng-click='login()') Login with Facebook
 
-	.col-lg-6.links(ng-show = 'isGenerated()')
-		h3 Resultado
-		ul
-			li(ng-repeat = 'video in videos')
-				a(target='_blank', ng-href='{{ video.getLink() }}') {{ video.getLink() }} 
+	div(ng-show='isFacebookLogged')
+		.col-lg-6.generate-input
+			.input-group
+				input.form-control(type='text', placeholder='Quanto tempo você tem?', ng-model='timeInput')
+				span.input-group-btn
+					button.btn.btn-default(ng-click='generate()', type='button') Generate
+
+		.col-lg-6.center-on-div.links(ng-show = 'isGenerated()')
+			h3 Resultado
+			ul
+				li(ng-repeat = 'video in videos')
+					a(target='_blank', ng-href='{{ video.getLink() }}') {{ video.getLink() }} 

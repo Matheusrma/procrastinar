@@ -33,4 +33,8 @@ body {
 .links > h3{
 	color:#ffffff;
 }
-  
+
+.center-on-div{
+	margin: 20px auto;
+	float: center;
+}
