@@ -67,13 +67,11 @@ angular.module('procrastinarApp.Controllers', []).
 controller('MainCtrl', ['$scope', '$http', 'Facebook', function($scope, $http, Facebook){
 
 	var m_likes = [];
+	var m_generated = false;
+
 	$scope.videos = [];
 	$scope.timeInput = '';
     $scope.isFacebookLogged = false;
-
-	$scope.getCurrentSearch = function(){
-		return m_currentSearchResult;
-	}
 
 	$scope.login = function() {
         Facebook.login(function(response) {
@@ -85,8 +83,6 @@ controller('MainCtrl', ['$scope', '$http', 'Facebook', function($scope, $http, F
     	}, {scope: 'user_likes'});
     };
 
-
-    var m_generated = false;
 
     $scope.generate = function(){
 
@@ -105,9 +101,9 @@ controller('MainCtrl', ['$scope', '$http', 'Facebook', function($scope, $http, F
 
 	        var randomIndex = Math.floor(Math.random() * m_likes.length);
 
-	        youtubeSearch(m_likes[randomIndex].getName(), 10);
+	        youtubeSearch(m_likes[randomIndex].getName(), 15);
 
-    		m_generated = true;
+	        m_generated = true;
 	    });
     };
 
@@ -147,6 +143,7 @@ controller('MainCtrl', ['$scope', '$http', 'Facebook', function($scope, $http, F
 				
 				var currentItem = items[i];
 
+				//Closure para manter o escopo
 				(function(videoId, videoTitle){
 					
 					var detailRequest = gapi.client.youtube.videos.list ({
@@ -156,15 +153,15 @@ controller('MainCtrl', ['$scope', '$http', 'Facebook', function($scope, $http, F
 
 					detailRequest.execute(function(detailResponse){
 
-						console.log(currentItem.id.videoId)
+						// console.log(currentItem.id.videoId)
 
 						// console.log(detailResponse.result)
 
 						var videoResponse = new Video(videoId, videoTitle, detailResponse.result.items[0].contentDetails.duration);
 
-						console.log(videoResponse.getName() + " / " + videoResponse.getDuration());
+						// console.log(videoResponse.getName() + " / " + videoResponse.getDuration());
 
-						if (videoResponse.getDuration() <= 180){
+						if (videoResponse.getDuration() <= $scope.timeInput){
 							$scope.videos.push(videoResponse);
 							$scope.$apply();
 						}

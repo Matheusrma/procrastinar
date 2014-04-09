@@ -34,6 +34,11 @@ body {
 	color:#ffffff;
 }
 
+.links > h4{
+	color:#ffffff;
+	padding-left: 40px;
+}
+
 .center-on-div{
 	margin: 20px auto;
 	float: center;

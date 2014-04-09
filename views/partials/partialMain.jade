@@ -18,7 +18,7 @@
 	div(ng-show='isFacebookLogged')
 		.col-lg-6.generate-input
 			.input-group
-				input.form-control(type='text', placeholder='Quanto tempo você tem?', ng-model='timeInput')
+				input.form-control(placeholder='Quanto tempo você tem? (Em Segundos)', ng-model="$parent.timeInput")
 				span.input-group-btn
 					button.btn.btn-default(ng-click='generate()', type='button') Generate
 
@@ -26,5 +26,5 @@
 			h3 Resultado
 			ul
 				li(ng-repeat = 'video in videos')
-					a(target='_blank', ng-href='{{ video.getLink() }}') {{ video.getName() }} / {{ video.getDuration() }} s
+					a(target='_blank', ng-href='{{ video.getLink() }}') {{ video.getName() }} ( {{ video.getDuration() }} segundos )
 			h4 Duração Total : {{ getTotalDuration() }}	Segundos
