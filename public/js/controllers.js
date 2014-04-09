@@ -183,7 +183,4 @@ controller('MainCtrl', ['$scope', 'Facebook', function($scope, Facebook){
 
 	  	});
     }
-
-    $scope.login();
-
 }]);
