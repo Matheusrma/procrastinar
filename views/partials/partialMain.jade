@@ -9,7 +9,7 @@
 		| to continue.
 
 .row
-	//.fb-login-button(data-max-rows='1', data-size='large', data-show-faces='true', data-auto-logout-link='false')
+	//.fb-login-button(data-max-rows='1', data-size='large', data-show-faces='false', data-auto-logout-link='false')
 
 	div(ng-hide='isFacebookLogged')
 		.col-lg-6.center-on-div
@@ -17,10 +17,10 @@
 
 	div(ng-show='isFacebookLogged')
 		.col-lg-6.generate-input
-			.input-group
-				input.form-control(placeholder='Quanto tempo você tem? (Em Segundos)', ng-model="$parent.timeInput")
+			form.input-group
+				input.form-control(type='text', placeholder='Quanto tempo você tem? (Em Segundos)', ng-model="$parent.timeInput")
 				span.input-group-btn
-					button.btn.btn-default(ng-click='generate()', type='button') Generate
+					button.btn.btn-default(type='submit', ng-click='generate()') Generate
 
 		.col-lg-6.center-on-div.links(ng-show = 'isGenerated()')
 			h3 Resultado

@@ -123,7 +123,7 @@ controller('MainCtrl', ['$scope', '$http', 'Facebook', function($scope, $http, F
 
     var youtubeSearch = function(p_query, p_maxResults){
 
-    	// console.log(p_query);
+    	console.log(p_query);
 
 	  	var request = gapi.client.youtube.search.list({
 	    	part: 'snippet',
