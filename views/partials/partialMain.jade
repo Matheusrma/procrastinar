@@ -26,4 +26,5 @@
 			h3 Resultado
 			ul
 				li(ng-repeat = 'video in videos')
-					a(target='_blank', ng-href='{{ video.getLink() }}') {{ video.getLink() }} 
+					a(target='_blank', ng-href='{{ video.getLink() }}') {{ video.getName() }} / {{ video.getDuration() }} s
+			h4 Duração Total : {{ getTotalDuration() }}	Segundos

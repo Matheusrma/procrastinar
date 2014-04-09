@@ -2,9 +2,14 @@
 
 /* Controllers */
 
-function Video(youtubeId, duration){
+function Video(youtubeId, name, duration){
+	var m_name = name;
 	var m_youtubeId = youtubeId;
 	var m_duration = duration; 
+
+	this.getName = function(){
+		return m_name;
+	}
 
 	this.getLink = function(){
 		return "http://www.youtube.com/watch?v=" + m_youtubeId;
@@ -92,7 +97,7 @@ controller('MainCtrl', ['$scope', '$http', 'Facebook', function($scope, $http, F
 		Facebook.api('/me/likes', function(response) {
 	        var likes = response.data;
 
-	        console.log(response);
+	        // console.log(response);
 
 	        for (var i = 0; i < likes.length; ++i){
 	        	m_likes.push(new Like(likes[i].name));
@@ -110,12 +115,22 @@ controller('MainCtrl', ['$scope', '$http', 'Facebook', function($scope, $http, F
     	return m_generated;
     };
 
+    $scope.getTotalDuration = function(){
+    	var total = 0;
+
+    	for (var i = 0; i < $scope.videos.length; ++i){
+    		total += $scope.videos[i].getDuration();
+    	}
+
+    	return total;
+    }
+
     var youtubeSearch = function(p_query, p_maxResults){
 
-    	console.log(p_query);
+    	// console.log(p_query);
 
 	  	var request = gapi.client.youtube.search.list({
-	    	part: 'id',
+	    	part: 'snippet',
 
 	    	q: p_query,
 	    	maxResults: p_maxResults,
@@ -124,28 +139,38 @@ controller('MainCtrl', ['$scope', '$http', 'Facebook', function($scope, $http, F
 
 	  	request.execute(function(response) {
 	  		
+			// console.log(response.result)
+
 			var items = response.result.items;
-	  		
-			console.log(items.contentDetails);
 
 	  		for (var i = 0; i < items.length; ++i){
 				
-				var detailRequest = gapi.client.youtube.videos.list ({
-					part: 'contentDetails',
-					id: items[i].id.videoId 
-				});
-			
-				detailRequest.execute(function(response){
+				var currentItem = items[i];
 
-					console.log(response.result.items[0].contentDetails.duration);
-					var resposta = new Video(response.result.items[0].id, response.result.items[0].contentDetails.duration);
+				(function(videoId, videoTitle){
+					
+					var detailRequest = gapi.client.youtube.videos.list ({
+						part: 'contentDetails',
+						id: currentItem.id.videoId 
+					});
 
-					if (resposta.getDuration() <= 180){
-						$scope.videos.push(resposta);
-						console.log(response.result.items[0].contentDetails.duration);
-					}
-					$scope.$apply()
-				});
+					detailRequest.execute(function(detailResponse){
+
+						console.log(currentItem.id.videoId)
+
+						// console.log(detailResponse.result)
+
+						var videoResponse = new Video(videoId, videoTitle, detailResponse.result.items[0].contentDetails.duration);
+
+						console.log(videoResponse.getName() + " / " + videoResponse.getDuration());
+
+						if (videoResponse.getDuration() <= 180){
+							$scope.videos.push(videoResponse);
+							$scope.$apply();
+						}
+					});
+
+				})(currentItem.id.videoId,currentItem.snippet.title);
 	  		}
 
 	  	});
