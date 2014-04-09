@@ -124,22 +124,30 @@ controller('MainCtrl', ['$scope', '$http', 'Facebook', function($scope, $http, F
 
 	  	request.execute(function(response) {
 	  		
-	  		var detailRequest = gapi.client.youtube.videos.list ({
-	  			part: 'contentDetails',
-	  			id: 'v6kdnidOGqc' 
-	  		});
-
-	  		detailRequest.execute(function(response){
-	  			console.log(response.result.items[0].contentDetails.duration);
-	  		});
-
-	  		var items = response.result.items;
+			var items = response.result.items;
+	  		
+			console.log(items.contentDetails);
 
 	  		for (var i = 0; i < items.length; ++i){
-	  			$scope.videos.push(new Video(items[i].id.videoId, "PT2M57S"));
+				
+				var detailRequest = gapi.client.youtube.videos.list ({
+					part: 'contentDetails',
+					id: items[i].id.videoId 
+				});
+			
+				detailRequest.execute(function(response){
+
+					console.log(response.result.items[0].contentDetails.duration);
+					var resposta = new Video(response.result.items[0].id, response.result.items[0].contentDetails.duration);
+
+					if (resposta.getDuration() <= 180){
+						$scope.videos.push(resposta);
+						console.log(response.result.items[0].contentDetails.duration);
+					}
+					$scope.$apply()
+				});
 	  		}
 
-	    	$scope.$apply()
 	  	});
     }
 

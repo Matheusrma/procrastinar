@@ -11,5 +11,5 @@ app.config(['$routeProvider', '$locationProvider', 'FacebookProvider', function(
     
     $locationProvider.html5Mode(true);
 
-    FacebookProvider.init('268834626616980');
+    FacebookProvider.init('126801877514306');
   }]);
