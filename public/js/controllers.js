@@ -64,13 +64,13 @@ function Like(name){
 }
 
 angular.module('procrastinarApp.Controllers', []).
-controller('MainCtrl', ['$scope', '$http', 'Facebook', function($scope, $http, Facebook){
+controller('MainCtrl', ['$scope', 'Facebook', function($scope, Facebook){
 
 	var m_likes = [];
 	var m_generated = false;
+	var m_currentRecomendationSource = "";
 
 	$scope.videos = [];
-	$scope.timeInput = '';
     $scope.isFacebookLogged = false;
 
 	$scope.login = function() {
@@ -83,10 +83,9 @@ controller('MainCtrl', ['$scope', '$http', 'Facebook', function($scope, $http, F
     	}, {scope: 'user_likes'});
     };
 
+    $scope.generate = function(type){
 
-    $scope.generate = function(){
-
-    	console.log($scope.timeInput);
+    	var maxDuration = calculateMaxDuration(type);
 
 		$scope.videos = [];
 
@@ -101,7 +100,9 @@ controller('MainCtrl', ['$scope', '$http', 'Facebook', function($scope, $http, F
 
 	        var randomIndex = Math.floor(Math.random() * m_likes.length);
 
-	        youtubeSearch(m_likes[randomIndex].getName(), 15);
+	        m_currentRecomendationSource = m_likes[randomIndex].getName();
+
+	        youtubeSearch(m_currentRecomendationSource, 15, maxDuration);
 
 	        m_generated = true;
 	    });
@@ -121,9 +122,19 @@ controller('MainCtrl', ['$scope', '$http', 'Facebook', function($scope, $http, F
     	return total;
     }
 
-    var youtubeSearch = function(p_query, p_maxResults){
+	var calculateMaxDuration = function(type){
+		if (type == 0) return 180;
+		if (type == 1) return 360;
+		return 5000;
+	}
 
-    	console.log(p_query);
+	$scope.getCurrentRecomendationSource = function(){
+		return m_currentRecomendationSource;
+	}
+
+    var youtubeSearch = function(p_query, p_maxResults, p_maxDuration){
+
+    	// console.log(p_query);
 
 	  	var request = gapi.client.youtube.search.list({
 	    	part: 'snippet',
@@ -161,7 +172,7 @@ controller('MainCtrl', ['$scope', '$http', 'Facebook', function($scope, $http, F
 
 						// console.log(videoResponse.getName() + " / " + videoResponse.getDuration());
 
-						if (videoResponse.getDuration() <= $scope.timeInput){
+						if (videoResponse.getDuration() <= p_maxDuration){
 							$scope.videos.push(videoResponse);
 							$scope.$apply();
 						}
@@ -172,5 +183,7 @@ controller('MainCtrl', ['$scope', '$http', 'Facebook', function($scope, $http, F
 
 	  	});
     }
+
+    $scope.login();
 
 }]);

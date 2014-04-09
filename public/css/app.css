@@ -1,7 +1,7 @@
 /* app css stylesheet */
 
 body {
-  padding-top:70px;
+  padding-top:30px;
   font-family: Helvetica;
 }
 
@@ -15,7 +15,7 @@ body {
 }
 
 .title{
-	margin-top: 100px;
+	margin-top: 10px;
 	margin-bottom: 20px;
 }
 
@@ -40,6 +40,6 @@ body {
 }
 
 .center-on-div{
-	margin: 20px auto;
+	margin: 0px auto;
 	float: center;
 }
