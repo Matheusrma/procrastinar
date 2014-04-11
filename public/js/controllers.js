@@ -165,7 +165,6 @@ controller('MainCtrl', ['$scope', 'Facebook', function($scope, Facebook){
 					detailRequest.execute(function(detailResponse){
 
 						// console.log(currentItem.id.videoId)
-
 						// console.log(detailResponse.result)
 
 						var videoResponse = new Video(videoId, videoTitle, detailResponse.result.items[0].contentDetails.duration);
