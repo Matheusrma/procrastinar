@@ -12,7 +12,7 @@ function Video(youtubeId, name, duration){
 	}
 
 	this.getLink = function(){
-		return "http://www.youtube.com/watch?v=" + m_youtubeId;
+		return m_youtubeId;
 	};		
 
 	this.getDuration = function(){

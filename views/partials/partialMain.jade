@@ -27,5 +27,5 @@
 			h4 Baseado no seu Like: {{ getCurrentRecomendationSource() }}
 			ul
 				li(ng-repeat = 'video in videos')
-					a(target='_blank', ng-href='{{ video.getLink() }}') {{ video.getName() }} ( {{ video.getDuration() }} segundos )
+					div(youtube, code='video.getLink()')
 			h4 Duração Total : {{ getTotalDuration() }}	Segundos
