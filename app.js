@@ -23,8 +23,8 @@ app.set('view engine', 'jade');
 app.use(express.logger('dev'));
 app.use(express.bodyParser());
 app.use(express.methodOverride());
-app.use('views', path.join(__dirname, 'views'))
 app.use(express.static(path.join(__dirname, 'public')));
+app.use('views', path.join(__dirname, 'views'));
 app.use(app.router);
 
 // development only
