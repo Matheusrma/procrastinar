@@ -139,9 +139,10 @@ controller('MainCtrl', ['$scope', 'Facebook', function($scope, Facebook){
 	  	var request = gapi.client.youtube.search.list({
 	    	part: 'snippet',
 
-	    	q: p_query,
+	    	q: "\"" + p_query + "\"",
 	    	maxResults: p_maxResults,
-	    	type: 'video'
+	    	type: 'video',
+	    	videoEmbeddable : 'true'
 	  	});
 
 	  	request.execute(function(response) {
@@ -182,4 +183,6 @@ controller('MainCtrl', ['$scope', 'Facebook', function($scope, Facebook){
 
 	  	});
     }
+
+    // $scope.login();
 }]);
