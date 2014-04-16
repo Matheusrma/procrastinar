@@ -2,21 +2,23 @@
 	h1 Procrastinar
 
 .row
-	
-
-.row
 	//.fb-login-button(data-max-rows='1', data-size='large', data-show-faces='false', data-auto-logout-link='false')
 
 	div(ng-hide='isFacebookLogged')
+
 		#login-container.pre-auth.col-lg-6.center-on-div
+			h2 Primeiro, Autentique no Youtube
 			button#login-link(href='#') Login with Youtube
 
 		.pos-auth.col-lg-6.center-on-div
+			h2 Agora, Autentique no Facebook
 			button(ng-click='login()') Login with Facebook
 			
 	div(ng-show='isFacebookLogged')
 		.col-lg-4.generate-input
 			form.center-on-div.choice-buttons.btn-group
+				h3 Quanto tempo você tem?
+				p Clique novamente para receber novos vídeos
 				button.btn.btn-default(ng-click="$parent.generate(0)") Rapidinha
 				button.btn.btn-default(ng-click="$parent.generate(1)") Normal
 				button.btn.btn-default(ng-click="$parent.generate(2)") To com Tempo
@@ -28,3 +30,5 @@
 				li(ng-repeat = 'video in videos')
 					div(youtube, code='video.getLink()')
 			h4 Duração Total : {{ getTotalDuration() }}	Segundos
+
+.row.footer		

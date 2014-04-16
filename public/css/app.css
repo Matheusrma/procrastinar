@@ -1,8 +1,10 @@
 /* app css stylesheet */
 
 body {
-  padding-top:30px;
-  font-family: Helvetica;
+  	padding-top:30px;
+  	font-family: Helvetica;
+	color:#ffffff;
+	text-align: center;
 }
 
 .background{
@@ -20,9 +22,7 @@ body {
 }
 
 .title > h1{
-	text-align: center;
 	font-size: 150px;
-	color:#ffffff;
 }
 
 .links{
@@ -47,4 +47,8 @@ body {
 .youtube-div{
 	height:400px;
 	margin-bottom: 30px;	
+}
+
+.footer{
+	height: 100px;
 }
