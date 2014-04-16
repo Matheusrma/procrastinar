@@ -25,7 +25,7 @@ app.use(express.methodOverride());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(app.router);
 
-app.set('views', path.join(__dirname, '/views'));
+app.set('views', path.join(__dirname, '/public/views'));
 app.set('view engine', 'jade');
 
 // development only
