@@ -55,11 +55,16 @@ function Video(youtubeId, name, duration){
 	}
 }
 
-function Like(name){
+function Like(name, category){
 	var m_name = name;
+	var m_category = category;
 
 	this.getName = function(){
 		return m_name;
+	}
+
+	this.getCategory = function(){
+		return m_category;
 	}
 }
 
@@ -71,7 +76,7 @@ controller('MainCtrl', ['$scope', 'Facebook', function($scope, Facebook){
 	var m_currentRecomendationSource = "";
 
 	$scope.videos = [];
-    $scope.isFacebookLogged = false;
+  $scope.isFacebookLogged = false;
 
 	$scope.login = function() {
         Facebook.login(function(response) {
@@ -83,44 +88,81 @@ controller('MainCtrl', ['$scope', 'Facebook', function($scope, Facebook){
     	}, {scope: 'user_likes'});
     };
 
-    $scope.generate = function(type){
+  $scope.generate = function(type){
 
-    	var maxDuration = calculateMaxDuration(type);
+  	var maxDuration = calculateMaxDuration(type);
 
 		$scope.videos = [];
 
 		Facebook.api('/me/likes', function(response) {
-	        var likes = response.data;
+			facebookQuery(response.paging.next, response.data, function(likes){
+				m_likes = [];
 
-	        // console.log(response);
+        for (var i = 0; i < likes.length; ++i){
+        	m_likes.push(new Like(likes[i].name,likes[i].category));
+        }
 
-	        for (var i = 0; i < likes.length; ++i){
-	        	m_likes.push(new Like(likes[i].name));
-	        }
+        var categoryDict = {};
 
-	        var randomIndex = Math.floor(Math.random() * m_likes.length);
+        for (var i = 0; i < m_likes.length; ++i){
+        	if (!(m_likes[i].getCategory() in categoryDict))
+        		categoryDict[m_likes[i].getCategory()] = {'count':0 , 'likes':[]};
 
-	        m_currentRecomendationSource = m_likes[randomIndex].getName();
+        	categoryDict[m_likes[i].getCategory()].count++;
+        	categoryDict[m_likes[i].getCategory()].likes.push(m_likes[i]);
+        }
 
-	        youtubeSearch(m_currentRecomendationSource, 15, maxDuration);
+        var dice = Math.floor(Math.random() * Object.keys(categoryDict).length);
+        var sum = 0;
+        var chosenCategory = "";
 
-	        m_generated = true;
-	    });
-    };
+        for (var category in categoryDict){
+        	sum += categoryDict[category].count;
 
-    $scope.isGenerated = function(){
-    	return m_generated;
-    };
+        	if (dice < sum){
+        		chosenCategory = category;
+        		break;
+        	}
+        }
 
-    $scope.getTotalDuration = function(){
-    	var total = 0;
+        var randomIndex = Math.floor(Math.random() * categoryDict[chosenCategory].likes.length);
 
-    	for (var i = 0; i < $scope.videos.length; ++i){
-    		total += $scope.videos[i].getDuration();
-    	}
+        m_currentRecomendationSource = categoryDict[chosenCategory].likes[randomIndex].getName();
 
-    	return total;
-    }
+        youtubeSearch(m_currentRecomendationSource, 15, maxDuration);
+
+        m_generated = true;
+			});					
+    });
+  };
+
+  $scope.isGenerated = function(){
+  	return m_generated;
+  };
+
+  $scope.getTotalDuration = function(){
+  	var total = 0;
+
+  	for (var i = 0; i < $scope.videos.length; ++i){
+  		total += $scope.videos[i].getDuration();
+  	}
+
+  	return total;
+  }
+
+  var facebookQuery = function(url,likes, callback){
+  	$.get(url
+	    ,{},
+	    function(response) {			       
+	      likes = likes.concat(response.data);	
+
+	      if ('next' in response.paging)
+	       	facebookQuery(response.paging.next, likes, callback);
+	      else
+	       	callback(likes)
+	    }
+		);
+  }
 
 	var calculateMaxDuration = function(type){
 		if (type == 0) return 180;
@@ -132,27 +174,23 @@ controller('MainCtrl', ['$scope', 'Facebook', function($scope, Facebook){
 		return m_currentRecomendationSource;
 	}
 
-    var youtubeSearch = function(p_query, p_maxResults, p_maxDuration){
+  var youtubeSearch = function(p_query, p_maxResults, p_maxDuration){
 
-    	// console.log(p_query);
+  	var request = gapi.client.youtube.search.list({
+    	part: 'snippet',
 
-	  	var request = gapi.client.youtube.search.list({
-	    	part: 'snippet',
+    	q: "\"" + p_query + "\"",
+    	maxResults: p_maxResults,
+    	type: 'video',
+    	videoEmbeddable : 'true'
+  	});
 
-	    	q: "\"" + p_query + "\"",
-	    	maxResults: p_maxResults,
-	    	type: 'video',
-	    	videoEmbeddable : 'true'
-	  	});
-
-	  	request.execute(function(response) {
-	  		
-			// console.log(response.result)
+  	request.execute(function(response) {
 
 			var items = response.result.items;
 
-	  		for (var i = 0; i < items.length; ++i){
-				
+  		for (var i = 0; i < items.length; ++i){
+			
 				var currentItem = items[i];
 
 				//Closure para manter o escopo
@@ -179,10 +217,10 @@ controller('MainCtrl', ['$scope', 'Facebook', function($scope, Facebook){
 					});
 
 				})(currentItem.id.videoId,currentItem.snippet.title);
-	  		}
+  		}
 
-	  	});
-    }
+  	});
+  }
 
     // $scope.login();
 }]);
